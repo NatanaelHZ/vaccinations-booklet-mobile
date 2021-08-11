@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
-// import 'components/SignUp.dart';
-import 'components/SignUp.dart';
+import 'components/SignIn.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'Sign Up';
+    String language = 'en';
+    var translations = {
+      "en": {
+        "app_name": "Vaccinations",
+        "sign_in": "Sign Up",
+      },
+      "es": {
+        "app_name": "Vacinas",
+        "sign_in": "Catastrar-se",
+      },
+      "pt": {
+        "app_name": "Vacinas",
+        "sign_in": "Cadastrar-se",
+      },
+    };
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: appTitle,
+      title: translations[language]['app_name'],
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text(appTitle),
+          title: Text(translations[language]['app_name']),
         ),
-        body: SignUpForm(),
+        body: SignInForm(),
       ),
     );
   }
