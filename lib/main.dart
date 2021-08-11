@@ -10,15 +10,12 @@ class MyApp extends StatelessWidget {
     var translations = {
       "en": {
         "app_name": "Vaccinations",
-        "sign_in": "Sign Up",
       },
       "es": {
         "app_name": "Vacinas",
-        "sign_in": "Catastrar-se",
       },
       "pt": {
         "app_name": "Vacinas",
-        "sign_in": "Cadastrar-se",
       },
     };
 
