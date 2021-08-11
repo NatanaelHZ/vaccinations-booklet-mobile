@@ -21,16 +21,10 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: translations[language]['app_name'],
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(translations[language]['app_name']),
-        ),
-        body: SignInForm(),
-      ),
+      home: SignInForm(),
     );
   }
 }

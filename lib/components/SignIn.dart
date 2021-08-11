@@ -40,13 +40,17 @@ class _SignInFormState extends State<SignInForm> {
   
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(translations[language]['sign_in']),
+      ),
+      body: Form(
       key: _formKey,
-      child:ListView(
+      child: ListView(
         padding: EdgeInsets.all(20),
         children: getFormWidget()
       ),
-    );
+    ));
   }
 
   List<Widget> getFormWidget() {
