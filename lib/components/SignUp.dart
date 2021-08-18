@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/I18n.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -14,26 +15,11 @@ class _SignUpFormState extends State<SignUpForm> {
   String _password = '';
 
   String language = 'en';
-  var translations = {
-    "en": {
-      "invalid_field": "Invalid field",
-      "sign_up": "Sign Up",
-    },
-    "es": {
-      "invalid_field": "Campo inválido",
-      "sign_up": "Catastrar-se",
-    },
-    "pt": {
-      "invalid_field": "Campo inválido",
-      "sign_up": "Cadastrar-se",
-    },
-  };
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translations[language]['sign_up']),
+        title: Text(I18n.translations[language]['sign_up']),
       ),
       body: Form(
         key: _formKey,
@@ -50,13 +36,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
     String validateEmail(String value) {
       if (value.isEmpty) {
-        return translations[language]['invalid_field'];
+        return I18n.translations[language]['invalid_field'];
       }
       Pattern pattern =
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regex = new RegExp(pattern);
       if (!regex.hasMatch(value))
-        return translations[language]['invalid_field'];
+        return I18n.translations[language]['invalid_field'];
       else
         return null;
     }
@@ -79,7 +65,7 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return translations[language]['invalid_field'];
+          return I18n.translations[language]['invalid_field'];
         }
         return null;
       },
@@ -118,7 +104,7 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
         validator: (value) {
           if (value.isEmpty)
-            return translations[language]['invalid_field'];
+            return I18n.translations[language]['invalid_field'];
           else if (value.length < 8)
             return 'Password should be more than 8 characters';
           else
@@ -136,7 +122,7 @@ class _SignUpFormState extends State<SignUpForm> {
           labelText: 'Password Confirmation'
         ),
         validator: (confirmPassword) {
-          if (confirmPassword.isEmpty) return translations[language]['invalid_field'];
+          if (confirmPassword.isEmpty) return I18n.translations[language]['invalid_field'];
           var password = _passKey.currentState.value;
           if (confirmPassword.compareTo(password) != 0)
             return 'Password mismatch';
@@ -156,7 +142,7 @@ class _SignUpFormState extends State<SignUpForm> {
       padding: EdgeInsets.all(20),
       color: Colors.blue,
       textColor: Colors.white,
-      child: new Text(translations[language]['sign_up'], style: TextStyle(fontSize: 20),),
+      child: new Text(I18n.translations[language]['sign_up'], style: TextStyle(fontSize: 20),),
       onPressed: onPressedSubmit));
 
     return formWidget;

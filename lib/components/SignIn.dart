@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './SignUp.dart';
+import '../utils/I18n.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -12,37 +13,13 @@ class _SignInFormState extends State<SignInForm> {
 
   String _email = '';
   String _password = '';
-
   String language = 'en';
-  var translations = {
-    "en": {
-      "invalid_field": "Invalid field",
-      "sign_up": "Sign Up",
-      "sign_in": "Sign In",
-      "email": "Email",
-      "password": "Password",
-    },
-    "es": {
-      "invalid_field": "Campo inválido",
-      "sign_up": "Catastrar-se",
-      "sign_in": "Iniciar sesión",
-      "email": "Correo",
-      "password": "Contraseña",
-    },
-    "pt": {
-      "invalid_field": "Campo inválido",
-      "sign_up": "Cadastrar-se",
-      "sign_in": "Logar",
-      "email": "Email",
-      "password": "Senha",
-    },
-  };
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translations[language]['sign_in']),
+        title: Text(I18n.translations[language]['sign_in']),
       ),
       body: Form(
       key: _formKey,
@@ -57,10 +34,10 @@ class _SignInFormState extends State<SignInForm> {
     List<Widget> formWidget = [];
 
     String validateEmail(String value) {
-      if (value.isEmpty) return translations[language]['invalid_field'];
+      if (value.isEmpty) return I18n.translations[language]['invalid_field'];
       Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regex = new RegExp(pattern);
-      if (!regex.hasMatch(value)) return translations[language]['invalid_field'];
+      if (!regex.hasMatch(value)) return I18n.translations[language]['invalid_field'];
       else return null;
     }
 
@@ -76,7 +53,7 @@ class _SignInFormState extends State<SignInForm> {
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: translations[language]['email'], 
+        labelText: I18n.translations[language]['email'], 
       ),
       keyboardType: TextInputType.emailAddress,
       validator: validateEmail,
@@ -95,11 +72,11 @@ class _SignInFormState extends State<SignInForm> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: translations[language]['password']
+          labelText: I18n.translations[language]['password']
         ),
         validator: (value) {
           if (value.isEmpty)
-            return translations[language]['invalid_field'];
+            return I18n.translations[language]['invalid_field'];
           else if (value.length < 8)
             return 'Password should be more than 8 characters';
           else
@@ -113,7 +90,7 @@ class _SignInFormState extends State<SignInForm> {
       padding: EdgeInsets.all(20),
       color: Colors.blue,
       textColor: Colors.white,
-      child: new Text(translations[language]['sign_in'], style: TextStyle(fontSize: 20),),
+      child: new Text(I18n.translations[language]['sign_in'], style: TextStyle(fontSize: 20),),
       onPressed: onPressedSubmit
     ));
 
@@ -127,7 +104,7 @@ class _SignInFormState extends State<SignInForm> {
             MaterialPageRoute(builder: (context) => SignUpForm()),
           );
         },
-        child: Center(child: Text(translations[language]['sign_up'], style: TextStyle(fontSize: 20)))
+        child: Center(child: Text(I18n.translations[language]['sign_up'], style: TextStyle(fontSize: 20)))
       ));
 
     return formWidget;
