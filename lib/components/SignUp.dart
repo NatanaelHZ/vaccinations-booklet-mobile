@@ -1,17 +1,56 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:http/http.dart' as http;
+
+@JsonSerializable()
+class FormData {
+  String name = '';
+  String email = '';
+  String password = '';
+
+  FormData({
+    this.name,
+    this.email,
+    this.password,
+  });
+
+  factory FormData.fromJson(Map<String, dynamic> json) =>
+      _$FormDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FormDataToJson(this);
+}
+
+FormData _$FormDataFromJson(Map<String, dynamic> json) {
+  return FormData(
+    name: json['name'] as String,
+    email: json['email'] as String,
+    password: json['password'] as String,
+  );
+}
+
+Map<String, dynamic> _$FormDataToJson(FormData instance) => <String, dynamic>{
+      'name': instance.name,
+      'email': instance.email,
+      'password': instance.password,
+    };
 
 class SignUpForm extends StatefulWidget {
+  final http.Client httpClient;
+
+  const SignUpForm({
+    this.httpClient,
+    Key key,
+  }) : super(key: key);
+
   @override
   _SignUpFormState createState() => new _SignUpFormState();
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  FormData formData = FormData();
   final _formKey = GlobalKey<FormState>();
   var _passKey = GlobalKey<FormFieldState>();
-
-  String _name = '';
-  String _email = '';
-  String _password = '';
 
   String language = 'en';
   var translations = {
@@ -28,7 +67,7 @@ class _SignUpFormState extends State<SignUpForm> {
       "sign_up": "Cadastrar-se",
     },
   };
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,12 +100,14 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
     }
 
-    void onPressedSubmit() {
+    Future<void> onPressedSubmit() async {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        print("Name " + _name);
-        print("Email " + _email);
-        print("Password " + _password);
+        var response = await http.post(
+            Uri.parse('https://jsonplaceholder.typicode.com/post'),
+            body: json.encode(formData.toJson()),
+            headers: {'content-type': 'application/json'});
+
         Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text('Form Submitted')));
       }
@@ -75,7 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Name', 
+        labelText: 'Name',
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -85,23 +126,23 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       onSaved: (value) {
         setState(() {
-          _name = value;
+          formData.name = value;
         });
       },
     ));
-    
+
     formWidget.add(Padding(padding: EdgeInsets.only(bottom: 20)));
 
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Email', 
+        labelText: 'Email',
       ),
       keyboardType: TextInputType.emailAddress,
       validator: validateEmail,
       onSaved: (value) {
         setState(() {
-          _email = value;
+          formData.email = value;
         });
       },
     ));
@@ -110,54 +151,54 @@ class _SignUpFormState extends State<SignUpForm> {
 
     formWidget.add(
       new TextFormField(
-        key: _passKey,
-        obscureText: true,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Password'
-        ),
-        validator: (value) {
-          if (value.isEmpty)
-            return translations[language]['invalid_field'];
-          else if (value.length < 8)
-            return 'Password should be more than 8 characters';
-          else
-            return null;
-        }),
+          key: _passKey,
+          obscureText: true,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), labelText: 'Password'),
+          validator: (value) {
+            if (value.isEmpty)
+              return translations[language]['invalid_field'];
+            else if (value.length < 8)
+              return 'Password should be more than 8 characters';
+            else
+              return null;
+          }),
     );
 
     formWidget.add(Padding(padding: EdgeInsets.only(bottom: 20)));
 
     formWidget.add(
       new TextFormField(
-        obscureText: true,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Password Confirmation'
-        ),
-        validator: (confirmPassword) {
-          if (confirmPassword.isEmpty) return translations[language]['invalid_field'];
-          var password = _passKey.currentState.value;
-          if (confirmPassword.compareTo(password) != 0)
-            return 'Password mismatch';
-          else
-            return null;
-        },
-        onSaved: (value) {
-          setState(() {
-            _password = value;
-          });
-        }),
+          obscureText: true,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), labelText: 'Password Confirmation'),
+          validator: (confirmPassword) {
+            if (confirmPassword.isEmpty)
+              return translations[language]['invalid_field'];
+            var password = _passKey.currentState.value;
+            if (confirmPassword.compareTo(password) != 0)
+              return 'Password mismatch';
+            else
+              return null;
+          },
+          onSaved: (value) {
+            setState(() {
+              formData.password = value;
+            });
+          }),
     );
 
     formWidget.add(Padding(padding: EdgeInsets.only(bottom: 20)));
 
     formWidget.add(new RaisedButton(
-      padding: EdgeInsets.all(20),
-      color: Colors.blue,
-      textColor: Colors.white,
-      child: new Text(translations[language]['sign_up'], style: TextStyle(fontSize: 20),),
-      onPressed: onPressedSubmit));
+        padding: EdgeInsets.all(20),
+        color: Colors.blue,
+        textColor: Colors.white,
+        child: new Text(
+          translations[language]['sign_up'],
+          style: TextStyle(fontSize: 20),
+        ),
+        onPressed: onPressedSubmit));
 
     return formWidget;
   }
