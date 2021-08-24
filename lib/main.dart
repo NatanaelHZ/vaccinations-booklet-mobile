@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'components/SignIn.dart';
 
 void main() => runApp(MyApp());
@@ -25,6 +26,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: SignInForm(),
+      localizationsDelegates: [
+        FlutterI18nDelegate(
+          translationLoader: FileTranslationLoader(basePath: 'assets/locales', fallbackFile: 'pt'),
+        ),
+      ],
     );
   }
 }
