@@ -70,9 +70,17 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: ListView(padding: EdgeInsets.all(20), children: getFormWidget()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(translations[language]['sign_up']),
+      ),
+      body: Form(
+        key: _formKey,
+        child:ListView(
+          padding: EdgeInsets.all(20),
+          children: getFormWidget()
+        ),
+      )
     );
   }
 
