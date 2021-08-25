@@ -5,6 +5,10 @@ import '../../models/Vaccine.dart';
 import '../../providers/Vaccine.dart';
 
 class VaccineForm extends StatefulWidget {
+  final Vaccine vaccine;
+
+  VaccineForm({Key key, this.vaccine}) : super(key: key);
+
   @override
   _VaccineFormState createState() => new _VaccineFormState();
 }
@@ -12,19 +16,41 @@ class VaccineForm extends StatefulWidget {
 class _VaccineFormState extends State<VaccineForm> {
   final _formKey = GlobalKey<FormState>();
   VaccineDbProvider db = VaccineDbProvider();
-  String _title = '';
+  String _title;
   String language = 'en';
+  final TextEditingController _titleController = TextEditingController();
+
+  @override
+  void initState() {
+    print(this.widget.vaccine);
+    if(this.widget.vaccine != null){
+      _titleController.value = new TextEditingController.fromValue(new TextEditingValue(text: this.widget.vaccine.title)).value;
+      // _titleController.value = TextEditingValue(
+      //   text: this.widget.vaccine.title,
+      //   selection: TextSelection.fromPosition(
+      //     TextPosition(offset: this.widget.vaccine.title.length),
+      //   ),
+      // );
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
 
   void onPressedSubmit() async {
     WidgetsFlutterBinding.ensureInitialized();
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+
       VaccineDbProvider db = VaccineDbProvider();
-      await db.addItem(
-        Vaccine(
-          title: _title,
-        )
-      );
+
+      if(this.widget.vaccine != null) await db.updateVaccine(this.widget.vaccine.id, Vaccine(id: this.widget.vaccine.id, title: _title));
+      else await db.addItem(Vaccine(title: _title));
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Vaccines()),
@@ -60,6 +86,7 @@ class _VaccineFormState extends State<VaccineForm> {
     List<Widget> formWidget = [];
 
     formWidget.add(new TextFormField(
+      controller: _titleController,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: I18n.translations[language]['title'], 

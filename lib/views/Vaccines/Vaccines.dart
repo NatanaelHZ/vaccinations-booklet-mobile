@@ -31,7 +31,6 @@ class _VaccinesState extends State<Vaccines> {
 
   @override
   Widget build(BuildContext context) {
-    // print('VACCINES $_vaccines');
     return Scaffold(
       appBar: AppBar(
         title: Text(I18n.translations[language]['vaccines']),
@@ -44,7 +43,12 @@ class _VaccinesState extends State<Vaccines> {
           itemBuilder: (context, index) {
             return Card(
               child: ListTile(
-                onTap: () => null,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VaccineForm(vaccine: _vaccines[index])),
+                  );
+                },
                 title: Text(_vaccines[index].title),
                 subtitle: Text('01/01/2021 00:00'),
                 trailing: IconButton(

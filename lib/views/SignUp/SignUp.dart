@@ -13,8 +13,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String _name = '';
   String _email = '';
   String _password = '';
-
   String language = 'en';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
