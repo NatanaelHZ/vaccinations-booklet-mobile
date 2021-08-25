@@ -5,7 +5,6 @@ import '../models/Vaccine.dart';
 import 'dart:io';
 import 'dart:async';
 
-
 class VaccineDbProvider {
   Future<Database> init() async {
     Directory directory = await getApplicationDocumentsDirectory();
@@ -17,46 +16,46 @@ class VaccineDbProvider {
         await db.execute("""
           CREATE TABLE vaccines(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            scheduled_at DATETIME)"""
+            title TEXT
+          )"""
         );
       }
     );
   }
 
-  Future<int> addItem(Vaccine item) async{ //returns number of items inserted as an integer
-    final db = await init(); //open database
-    return db.insert("vaccines", item.toMap(), //toMap() function from Vaccine
-      conflictAlgorithm: ConflictAlgorithm.ignore, //ignores conflicts due to duplicate entries
+  Future<int> addItem(Vaccine item) async{ //
+    final db = await init();
+    return db.insert("vaccines", item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 
-  Future<List<Vaccine>> fetchVaccines() async{ //returns the memos as a list (array)
+  Future<List<Vaccine>> fetchVaccines() async{
     final db = await init();
-    final maps = await db.query("vaccines"); //query all the rows in a table as an array of maps
+    final maps = await db.query("vaccines");
 
-    return List.generate(maps.length, (i) { //create a list of memos
+    return List.generate(maps.length, (i) {
       return Vaccine(              
         id: maps[i]['id'],
         title: maps[i]['title'],
-        // scheduledAt: maps[i]['scheduled_at'],
+       
       );
     });
   }
 
-  Future<int> deleteVaccine(int id) async{ //returns number of items deleted
+  Future<int> deleteVaccine(int id) async{
     final db = await init();
   
     int result = await db.delete(
-      "vaccines", //table name
+      "vaccines",
       where: "id = ?",
-      whereArgs: [id] // use whereArgs to avoid SQL injection
+      whereArgs: [id]
     );
 
     return result;
   }
 
-  Future<int> updateVaccine(int id, Vaccine item) async{ // returns the number of rows updated
+  Future<int> updateVaccine(int id, Vaccine item) async{
     final db = await init();
     int result = await db.update(
       "vaccines", 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components/Vaccines.dart';
+import 'views/Vaccines/Vaccines.dart';
 // import 'components/SignIn.dart';
 
 void main() => runApp(MyApp());

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './SignUp.dart';
-import '../utils/I18n.dart';
+import '../SignUp/SignUp.dart';
+import '../../utils/I18n.dart';
 
 class SignInForm extends StatefulWidget {
   @override

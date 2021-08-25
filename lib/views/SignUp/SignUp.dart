@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/I18n.dart';
+import '../../utils/I18n.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -61,7 +61,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Name', 
+        labelText: I18n.translations[language]['name'], 
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -81,7 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Email', 
+        labelText: I18n.translations[language]['email'], 
       ),
       keyboardType: TextInputType.emailAddress,
       validator: validateEmail,
@@ -100,13 +100,13 @@ class _SignUpFormState extends State<SignUpForm> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: 'Password'
+          labelText: I18n.translations[language]['password']
         ),
         validator: (value) {
           if (value.isEmpty)
             return I18n.translations[language]['invalid_field'];
           else if (value.length < 8)
-            return 'Password should be more than 8 characters';
+            return I18n.translations[language]['invalid_password'];
           else
             return null;
         }),
@@ -119,13 +119,13 @@ class _SignUpFormState extends State<SignUpForm> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: 'Password Confirmation'
+          labelText: I18n.translations[language]['password_confirmation']
         ),
         validator: (confirmPassword) {
           if (confirmPassword.isEmpty) return I18n.translations[language]['invalid_field'];
           var password = _passKey.currentState.value;
           if (confirmPassword.compareTo(password) != 0)
-            return 'Password mismatch';
+            return I18n.translations[language]['password_mismatch'];
           else
             return null;
         },
