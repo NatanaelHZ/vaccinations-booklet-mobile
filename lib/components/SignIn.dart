@@ -68,6 +68,10 @@ class _SignInFormState extends State<SignInForm> {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         Scaffold.of(context).showSnackBar(SnackBar(content: Text('Form Submitted')));
+        Navigator.pushNamed(
+          context,
+          '/',
+        );
       }
     }
     
