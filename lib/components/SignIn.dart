@@ -113,6 +113,10 @@ class _SignInFormState extends State<SignInForm> {
 
         Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text(_responseMessage)));
+        Navigator.pushNamed(
+          context,
+          '/',
+        );
       }
     }
 
