@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:vaccines_app/components/MainPage.dart';
 
-Map buildRoutes() {
+Map<String, Widget Function(BuildContext)> buildRoutes() {
   return {
     '/': (context) => MainPage()
   };
