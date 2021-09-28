@@ -1,0 +1,11 @@
+{
+  "mainPage": {
+    "title": "Home",
+    "error_occured": "An error occured!",
+    "hello": "Hello"
+  },
+  "signIn": {
+    "title": "Login",
+    "error_occured": "An error occured!"
+  }
+}
