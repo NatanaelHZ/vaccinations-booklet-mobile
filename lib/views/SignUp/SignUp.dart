@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../utils/I18n.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_i18n/flutter_i18n.dart';
+
+const SERVER_IP = 'http://127.0.0.1:3000';
 
 @JsonSerializable()
 class FormData {
@@ -31,19 +33,12 @@ FormData _$FormDataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$FormDataToJson(FormData instance) => <String, dynamic>{
-      'name': instance.name,
-      'email': instance.email,
-      'password': instance.password,
-    };
+  'name': instance.name,
+  'email': instance.email,
+  'password': instance.password,
+};
 
 class SignUpForm extends StatefulWidget {
-  final http.Client httpClient;
-
-  const SignUpForm({
-    this.httpClient,
-    Key key,
-  }) : super(key: key);
-
   @override
   _SignUpFormState createState() => new _SignUpFormState();
 }
@@ -62,7 +57,7 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(I18n.translations[language]['sign_up']),
+        title: Text(FlutterI18n.translate(context, 'sign_up')),
       ),
       body: Form(
         key: _formKey,
@@ -79,13 +74,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
     String validateEmail(String value) {
       if (value.isEmpty) {
-        return I18n.translations[language]['invalid_field'];
+        return FlutterI18n.translate(context, 'invalid_field');
       }
       Pattern pattern =
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regex = new RegExp(pattern);
       if (!regex.hasMatch(value))
-        return I18n.translations[language]['invalid_field'];
+        return FlutterI18n.translate(context, 'invalid_field');
       else
         return null;
     }
@@ -93,24 +88,22 @@ class _SignUpFormState extends State<SignUpForm> {
     Future<void> onPressedSubmit() async {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        var response = await http.post(
-            Uri.parse('https://jsonplaceholder.typicode.com/post'),
-            body: json.encode(formData.toJson()),
-            headers: {'content-type': 'application/json'});
-
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Form Submitted')));
+        await http.post(
+          Uri.parse('http://$SERVER_IP/users'),
+          body: json.encode(formData.toJson()),
+          headers: {'content-type': 'application/json'}
+        );
       }
     }
 
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: I18n.translations[language]['name'], 
+        labelText: FlutterI18n.translate(context, 'name'), 
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return I18n.translations[language]['invalid_field'];
+          return FlutterI18n.translate(context, 'invalid_field');
         }
         return null;
       },
@@ -126,7 +119,7 @@ class _SignUpFormState extends State<SignUpForm> {
     formWidget.add(new TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: I18n.translations[language]['email'], 
+        labelText: FlutterI18n.translate(context, 'email'), 
       ),
       keyboardType: TextInputType.emailAddress,
       validator: validateEmail,
@@ -145,13 +138,13 @@ class _SignUpFormState extends State<SignUpForm> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: I18n.translations[language]['password']
+          labelText: FlutterI18n.translate(context, 'password')
         ),
         validator: (value) {
           if (value.isEmpty)
-            return I18n.translations[language]['invalid_field'];
+            return FlutterI18n.translate(context, 'invalid_field');
           else if (value.length < 8)
-            return I18n.translations[language]['invalid_password'];
+            return FlutterI18n.translate(context, 'invalid_password');
           else
             return null;
         }),
@@ -164,13 +157,13 @@ class _SignUpFormState extends State<SignUpForm> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: I18n.translations[language]['password_confirmation']
+          labelText: FlutterI18n.translate(context, 'password_confirmation')
         ),
         validator: (confirmPassword) {
-          if (confirmPassword.isEmpty) return I18n.translations[language]['invalid_field'];
+          if (confirmPassword.isEmpty) return FlutterI18n.translate(context, 'invalid_field');
           var password = _passKey.currentState.value;
           if (confirmPassword.compareTo(password) != 0)
-            return I18n.translations[language]['password_mismatch'];
+            return FlutterI18n.translate(context, 'password_mismatch');
           else
             return null;
         },
@@ -187,7 +180,7 @@ class _SignUpFormState extends State<SignUpForm> {
       padding: EdgeInsets.all(20),
       color: Colors.blue,
       textColor: Colors.white,
-      child: new Text(I18n.translations[language]['sign_up'], style: TextStyle(fontSize: 20),),
+      child: new Text(FlutterI18n.translate(context, 'sign_up'), style: TextStyle(fontSize: 20),),
       onPressed: onPressedSubmit));
 
     return formWidget;
