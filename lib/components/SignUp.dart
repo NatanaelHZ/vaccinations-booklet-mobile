@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 
+const SERVER_IP = 'http://127.0.0.1:3000';
+
 @JsonSerializable()
 class FormData {
   String name = '';
@@ -30,19 +32,12 @@ FormData _$FormDataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$FormDataToJson(FormData instance) => <String, dynamic>{
-      'name': instance.name,
-      'email': instance.email,
-      'password': instance.password,
-    };
+  'name': instance.name,
+  'email': instance.email,
+  'password': instance.password,
+};
 
 class SignUpForm extends StatefulWidget {
-  final http.Client httpClient;
-
-  const SignUpForm({
-    this.httpClient,
-    Key key,
-  }) : super(key: key);
-
   @override
   _SignUpFormState createState() => new _SignUpFormState();
 }
@@ -103,13 +98,11 @@ class _SignUpFormState extends State<SignUpForm> {
     Future<void> onPressedSubmit() async {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        var response = await http.post(
-            Uri.parse('https://jsonplaceholder.typicode.com/post'),
-            body: json.encode(formData.toJson()),
-            headers: {'content-type': 'application/json'});
-
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Form Submitted')));
+        await http.post(
+          Uri.parse('http://$SERVER_IP/users'),
+          body: json.encode(formData.toJson()),
+          headers: {'content-type': 'application/json'}
+        );
       }
     }
 
