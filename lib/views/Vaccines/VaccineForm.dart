@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../views/Vaccines/Vaccines.dart';
-import '../../utils/I18n.dart';
 import '../../models/Vaccine.dart';
 import '../../providers/Vaccine.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class VaccineForm extends StatefulWidget {
   final Vaccine vaccine;
@@ -62,7 +62,7 @@ class _VaccineFormState extends State<VaccineForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(I18n.translations[language]['vaccine']),
+        title: Text(FlutterI18n.translate(context, 'vaccine')),
         actions: [
           IconButton(
             icon: Icon(Icons.check),
@@ -89,10 +89,10 @@ class _VaccineFormState extends State<VaccineForm> {
       controller: _titleController,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: I18n.translations[language]['title'], 
+        labelText: FlutterI18n.translate(context, 'title'), 
       ),
       validator: (value) {
-        if (value.isEmpty) return I18n.translations[language]['invalid_field'];
+        if (value.isEmpty) return FlutterI18n.translate(context, 'invalid_field');
         else return null;
       },
       onSaved: (value) {

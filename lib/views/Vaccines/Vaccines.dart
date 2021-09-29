@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import '../../providers/Vaccine.dart';
 import 'package:flutter/material.dart';
 import 'VaccineForm.dart';
-import '../../utils/I18n.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class Vaccines extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _VaccinesState extends State<Vaccines> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(I18n.translations[language]['vaccines']),
+        title: Text(FlutterI18n.translate(context, 'vaccines')),
       ),
       body: Container(
         child: ListView.separated(
@@ -58,11 +58,11 @@ class _VaccinesState extends State<Vaccines> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: new Text(I18n.translations[language]['delete_permanently']),
-                          content: new Text(I18n.translations[language]['are_you_sure']),
+                          title: new Text(FlutterI18n.translate(context, 'delete_permanently')),
+                          content: new Text(FlutterI18n.translate(context, 'are_you_sure')),
                           actions: <Widget>[
                             new TextButton(
-                              child: new Text(I18n.translations[language]['yes']),
+                              child: new Text(FlutterI18n.translate(context, 'yes')),
                               onPressed: () async {
                                 await db.deleteVaccine(_vaccines[index].id);
                                 this.fetchVaccines();
@@ -70,7 +70,7 @@ class _VaccinesState extends State<Vaccines> {
                               },
                             ),
                             new TextButton(
-                              child: new Text(I18n.translations[language]['no']),
+                              child: new Text(FlutterI18n.translate(context, 'no')),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
