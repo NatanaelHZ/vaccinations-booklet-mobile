@@ -23,13 +23,13 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: Text(FlutterI18n.translate(context, 'mainPage.title'))),
+      appBar: AppBar(title: Text(FlutterI18n.translate(context, 'home'))),
       body: Center(
         child: 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(FlutterI18n.translate(context, 'mainPage.hello'), style: TextStyle(fontSize: 30),),
+              Text(FlutterI18n.translate(context, 'hello'), style: TextStyle(fontSize: 30),),
               Text(", ${payload['email']}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),)
             ]
           ),

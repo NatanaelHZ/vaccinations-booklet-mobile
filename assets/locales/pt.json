@@ -1,11 +1,24 @@
 {
-  "mainPage": {
-    "title": "Início",
-    "error_occured": "Um erro ocorreu!",
-    "hello": "Olá"
-  },
-  "signIn": {
-    "title": "Logar",
-    "error_occured": "Um erro ocorreu!"
-  }
+  "home": "Início",
+  "error_occured": "Um erro ocorreu!",
+  "hello": "Olá",
+  "login": "Login",
+  "vaccines": "Vacinas",
+  "vaccine": "Vacina",
+  "sign_up": "Cadastrar-se",
+  "sign_in": "Logar",
+  "email": "Email",
+  "password": "Senha",
+  "invalid_field": "Campo inválido",
+  "no": "Não",
+  "yes": "Sim",
+  "are_you_sure": "Você está certo?",
+  "delete_permanently": "Deletar permanentemente",
+  "name": "Nome",
+  "password_confirmation": "Confirmação de Senha",
+  "invalid_password": "A senha deve ter mais de 8 caracteres",
+  "password_mismatch": "Senha incorreta",
+  "title": "Título",
+  "save": "Salvar",
+  "not_authorized": "Não autorizado"
 }
